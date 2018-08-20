@@ -25,6 +25,7 @@ class SearchBar extends Component {
     e.preventDefault();
 
     this.props.fetchWeather(this.state.term);
+    
     this.setState({
       term: ''
     })
