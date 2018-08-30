@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-// import connect from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { fetchWeather } from '../actions/index';
 
 class SearchBar extends Component {
   constructor(props) {
@@ -10,6 +12,7 @@ class SearchBar extends Component {
     };
 
     this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSearchChange(e) {
@@ -20,6 +23,11 @@ class SearchBar extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
+
+    this.props.fetchWeather(this.state.searchText);
+    this.setState({
+      searchText: ''
+    })
   }
 
   render() {
@@ -40,6 +48,8 @@ class SearchBar extends Component {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ fetchWeather }, dispatch);
+}
 
-
-export default SearchBar;
+export default connect(null, mapDispatchToProps)(SearchBar);
