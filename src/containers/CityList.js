@@ -1,41 +1,45 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { DATA_CONSTANTS } from '../constants'
+import CityRow from '../components/CityRow';
 
-const createCityRows = cityData => {
-  return cityData.map(location => {
-    const name = location.city.name;
+const createCityRows = (cityData, dataTypes) => {
+  return cityData.map( location => {
+    const { city } = location
     return (
-      <tr key={name}>
-        <td>{name}</td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
+      <CityRow city={city}  key={city.name} dataTypes={dataTypes}/>
     );
   })
 }
 
-const CityList = ({ cityData }) => {
+const createTableHeader = dataTypes => {
+  return dataTypes.map( type => {
+    return type ? (
+      <th key={type}>{DATA_CONSTANTS[type].name}</th>
+    ) : null
+  })
+}
+
+const CityList = ({ cityData, dataTypes }) => {
   return (
     <table className="table table-hover">
       <thead>
         <tr>
           <th>City</th>
-          <th>Temperature</th>
-          <th>Pressure</th>
-          <th>Humidity</th>
+          {createTableHeader(dataTypes)}
         </tr>
       </thead>
       <tbody>
-        {createCityRows(cityData)}
+        {createCityRows(cityData, dataTypes)}
       </tbody>
     </table>
   );
 }
 
-const mapStateToProps = ({ cityData }) => {
+const mapStateToProps = ({ cityData, dataTypes }) => {
   return {
-    cityData
+    cityData,
+    dataTypes
   }
 }
 
